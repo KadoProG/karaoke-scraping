@@ -1,0 +1,21 @@
+.TextField {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  & label {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+  }
+  & input {
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  & textarea {
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+}

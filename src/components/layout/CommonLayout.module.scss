@@ -1,0 +1,14 @@
+.header {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+  & a {
+    color: #fff;
+    text-decoration: none;
+    padding: 12px;
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+}
