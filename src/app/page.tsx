@@ -80,8 +80,8 @@ const Page = () => {
         />
       </div>
       <Pagination
-        page={damAiTableMeta.page ?? 1}
-        totalPages={damAiTableMeta.totalPage ?? 0}
+        page={damAiTableMeta.currentPage ?? 1}
+        totalPages={damAiTableMeta.total ?? 0}
         onPageChange={(num) => setMeta({ ...damAiTableMeta, page: num })}
       />
       <TextField
@@ -101,8 +101,8 @@ const Page = () => {
 
       <DamAiTable data={damAiTableData || []} />
       <Pagination
-        page={damAiTableMeta.page ?? 1}
-        totalPages={damAiTableMeta.totalPage ?? 0}
+        page={damAiTableMeta.currentPage ?? 1}
+        totalPages={damAiTableMeta.total ?? 0}
         onPageChange={(num) => setMeta({ ...damAiTableMeta, page: num })}
       />
       <BarChart

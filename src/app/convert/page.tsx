@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "@/app/convert/page.module.scss";
-import { tempData } from "@/mock/tempData";
+import { tempData, tempDxgData } from "@/mock/tempData";
 import { convertDamAiSummary } from "@/utils/convertData";
 import { convertXmlToJson } from "@/utils/convertXmlToJson";
 import React from "react";
@@ -39,6 +39,9 @@ const Page = () => {
 
   return (
     <>
+      <button onClick={() => setInitText(JSON.stringify(tempDxgData, null, 2))}>
+        DXGに変更
+      </button>
       <div className={styles.container}>
         <div className={styles.textarea}>
           <div>
