@@ -1,4 +1,4 @@
-import { convertDamAiSummary, convertMeta } from "@/utils/convertData";
+import { convertDamAiScores, convertMeta } from "@/utils/convertData";
 import { convertXmlToJson } from "@/utils/convertXmlToJson";
 import { PrismaClient } from "@prisma/client";
 import axios from "axios";
@@ -94,7 +94,7 @@ const fetchListAndSaveSqlite = async (
 
   const resultJson = await convertXmlToJson(data);
 
-  const list = convertDamAiSummary(resultJson);
+  const list = convertDamAiScores(resultJson);
 
   const meta = convertMeta(resultJson);
 

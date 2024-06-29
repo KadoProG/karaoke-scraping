@@ -3,7 +3,7 @@
  * @param data 変換前のデータ
  * @returns 変換後のデータ
  */
-export const convertDamAiSummary = (data: any) =>
+export const convertDamScores = (data: any) =>
   data.document.list[0].data.map((d: any) => {
     const scoring = d.scoring[0];
     const scoreDetail = scoring.$;
@@ -315,6 +315,16 @@ export const convertDamAiSummary = (data: any) =>
     return result;
   });
 
+export const convertDamAiScores = (data: any) => {
+  return data.document.list[0].data.map((d: any) => {
+    const scoring = d.scoring[0];
+    const scoreDetail = scoring.$;
+    return {
+      score: scoring._,
+      ...scoreDetail,
+    };
+  });
+};
 /**
  * メタデータを変換する
  * @param data 変換前のデータ

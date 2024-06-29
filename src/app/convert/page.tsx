@@ -2,7 +2,7 @@
 
 import styles from "@/app/convert/page.module.scss";
 import { tempData, tempDxgData } from "@/mock/tempData";
-import { convertDamAiSummary } from "@/utils/convertData";
+import { convertDamAiScores } from "@/utils/convertData";
 import { convertXmlToJson } from "@/utils/convertXmlToJson";
 import React from "react";
 
@@ -30,7 +30,7 @@ const Page = () => {
   const handleConvert = React.useCallback(async () => {
     try {
       const beforeJson = JSON.parse(initText);
-      const result = convertDamAiSummary(beforeJson);
+      const result = convertDamAiScores(beforeJson);
       setText(JSON.stringify(result, null, 2));
     } catch (e) {
       console.error(e);
