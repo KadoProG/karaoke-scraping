@@ -7,7 +7,7 @@ const cdmCardNo = process.env.CDM_CARD_NO;
 const url =
   "https://www.clubdam.com/app/damtomo/scoring/GetScoringAiListXML.do";
 
-export const fetchDamSite = async (options: {
+export const fetchDamAiSite = async (options: {
   pageNo?: number;
   scoringAiId?: number;
 }): Promise<{ list: any[]; meta: IMeta }> => {
@@ -37,17 +37,16 @@ export const fetchDamSiteList = async (options: {
   minPage?: number;
   maxPage?: number;
   scoringAiIds?: number[];
+  currentMaxDamScoringAiId?: number;
 }) => {
   const resultList = [];
   let pageNo = options.minPage || 1;
   const maxPageNo = options.maxPage || 40;
   let remainingScoringAiIds: number[] = options.scoringAiIds || [];
 
-  const currentMaxDamScoringAiId = undefined;
-
   while (true) {
     console.log(`${pageNo}ページ目を取得しています...`);
-    const { list } = await fetchDamSite({ pageNo });
+    const { list } = await fetchDamAiSite({ pageNo });
 
     if (list.length === 0) break;
 
@@ -61,8 +60,8 @@ export const fetchDamSiteList = async (options: {
     );
 
     if (
-      currentMaxDamScoringAiId &&
-      scoringAiIds.includes(currentMaxDamScoringAiId)
+      options.currentMaxDamScoringAiId &&
+      scoringAiIds.includes(options.currentMaxDamScoringAiId)
     )
       break;
 
@@ -73,7 +72,7 @@ export const fetchDamSiteList = async (options: {
   await Promise.all(
     remainingScoringAiIds.map(async (scoringAiId) => {
       console.log(`${scoringAiId}のデータを取得します`);
-      const { list } = await fetchDamSite({ scoringAiId });
+      const { list } = await fetchDamAiSite({ scoringAiId });
       resultList.push(...list);
     })
   );
