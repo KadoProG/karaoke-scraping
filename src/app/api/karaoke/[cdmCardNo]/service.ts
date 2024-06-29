@@ -2,17 +2,17 @@ import { convertDamAiScores, convertMeta } from "@/utils/convertData";
 import { convertXmlToJson } from "@/utils/convertXmlToJson";
 import axios from "axios";
 
-const cdmCardNo = process.env.CDM_CARD_NO;
-
 const url =
   "https://www.clubdam.com/app/damtomo/scoring/GetScoringAiListXML.do";
 
 export const fetchDamAiSite = async (options: {
+  cdmCardNo: string;
   pageNo?: number;
   scoringAiId?: number;
 }): Promise<{ list: any[]; meta: IMeta }> => {
+  if (!options.cdmCardNo) throw new Error("cdmCardNo is required");
   const params = {
-    cdmCardNo,
+    cdmCardNo: options.cdmCardNo,
     pageNo: options.pageNo ?? undefined,
     scoringAiId: options.scoringAiId ?? undefined,
     detailFlg: 1,
@@ -38,7 +38,9 @@ export const fetchDamSiteList = async (options: {
   maxPage?: number;
   scoringAiIds?: number[];
   currentMaxDamScoringAiId?: number;
+  cdmCardNo: string;
 }) => {
+  console.log(options);
   const resultList = [];
   let pageNo = options.minPage || 1;
   const maxPageNo = options.maxPage || 40;
@@ -46,7 +48,10 @@ export const fetchDamSiteList = async (options: {
 
   while (true) {
     console.log(`${pageNo}ページ目を取得しています...`);
-    const { list } = await fetchDamAiSite({ pageNo });
+    const { list } = await fetchDamAiSite({
+      pageNo,
+      cdmCardNo: options.cdmCardNo,
+    });
 
     if (list.length === 0) break;
 
@@ -54,7 +59,7 @@ export const fetchDamSiteList = async (options: {
 
     if (pageNo >= maxPageNo) break;
 
-    const scoringAiIds = list.map((data) => data.scoringAiId);
+    const scoringAiIds = list.map((data) => Number(data.scoringAiId));
     remainingScoringAiIds = remainingScoringAiIds.filter((id) =>
       scoringAiIds.includes(id)
     );
@@ -62,8 +67,9 @@ export const fetchDamSiteList = async (options: {
     if (
       options.currentMaxDamScoringAiId &&
       scoringAiIds.includes(options.currentMaxDamScoringAiId)
-    )
+    ) {
       break;
+    }
 
     pageNo += 1;
   }
@@ -72,7 +78,10 @@ export const fetchDamSiteList = async (options: {
   await Promise.all(
     remainingScoringAiIds.map(async (scoringAiId) => {
       console.log(`${scoringAiId}のデータを取得します`);
-      const { list } = await fetchDamAiSite({ scoringAiId });
+      const { list } = await fetchDamAiSite({
+        scoringAiId,
+        cdmCardNo: options.cdmCardNo,
+      });
       resultList.push(...list);
     })
   );

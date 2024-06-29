@@ -1,20 +1,14 @@
-import { convertDamAiScores, convertMeta } from "@/utils/convertData";
-import { convertXmlToJson } from "@/utils/convertXmlToJson";
+import { fetchDamSiteList } from "@/app/api/karaoke/[cdmCardNo]/service";
 import { PrismaClient } from "@prisma/client";
-import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
-const url =
-  "https://www.clubdam.com/app/damtomo/scoring/GetScoringAiListXML.do";
-
-export const GET = async (
+export const POST = async (
   req: NextRequest,
   { params }: { params: { cdmCardNo: string } }
 ) => {
   const cdmCardNo = params.cdmCardNo;
-
   if (!cdmCardNo) {
     return NextResponse.json(
       { message: "cdmCardNo is required" },
@@ -22,81 +16,63 @@ export const GET = async (
     );
   }
 
-  await fetchDataAndSaveSQLite(cdmCardNo);
+  const body = await req.json();
 
-  return NextResponse.json({ message: "success" });
-};
-
-const fetchDataAndSaveSQLite = async (cdmCardNo: string) => {
-  const resultList = [];
-  let pageNo = 1;
-
-  const currentMaxDamScoringAiIdData = await prisma.damAiScores.findFirst({
-    orderBy: {
-      scoringAiId: "desc",
-    },
-  });
-  const currentMaxDamScoringAiId = currentMaxDamScoringAiIdData?.scoringAiId;
-
-  let hasNext = true;
-
-  while (hasNext) {
-    const { list } = await fetchListAndSaveSqlite(cdmCardNo, pageNo);
-
-    resultList.push(...list);
-
-    if (
-      (currentMaxDamScoringAiId &&
-        list
-          .map((data) => data.scoringAiId)
-          .includes(currentMaxDamScoringAiId)) ||
-      pageNo === 40
-    ) {
-      hasNext = false;
-    }
-
-    pageNo++;
+  if (!body) {
+    return NextResponse.json(
+      { message: "request body is required" },
+      { status: 400 }
+    );
   }
+  const { minPage, maxPage, scoringAiIds, isIgnoreCurrentMaxId } = body;
+
+  const minPageNumber = Number(minPage) || undefined;
+  const maxPageNumber = Number(maxPage) || undefined;
+  const scoringAiIdsNumber = scoringAiIds?.length
+    ? (scoringAiIds
+        .map((id: string) => Number(id))
+        .filter((id: number) => !isNaN(id)) as number[])
+    : undefined;
 
   try {
-    const query = resultList.map((damAiScore) => {
-      return prisma.damAiScores.upsert({
+    let currentMaxDamScoringAiId: number | undefined;
+    if (!isIgnoreCurrentMaxId) {
+      const currentMaxDamScoringAiIdData = await prisma.damAiScores.findFirst({
+        orderBy: {
+          scoringAiId: "desc",
+        },
+      });
+
+      currentMaxDamScoringAiId =
+        Number(currentMaxDamScoringAiIdData?.scoringAiId) || undefined;
+    }
+
+    const damAiScores = await fetchDamSiteList({
+      cdmCardNo,
+      minPage: minPageNumber,
+      maxPage: maxPageNumber,
+      scoringAiIds: scoringAiIdsNumber,
+      currentMaxDamScoringAiId,
+    });
+
+    console.log(damAiScores.map((damAiScore) => damAiScore.scoringAiId));
+
+    const query = damAiScores.map((damAiScore) =>
+      prisma.damAiScores.upsert({
         where: { scoringAiId: damAiScore.scoringAiId },
         update: {},
         create: {
           ...damAiScore,
           score: Number(damAiScore.score),
         },
-      });
-    });
+      })
+    );
 
     await prisma.$transaction([...query]);
+
+    return NextResponse.json({ message: "success" });
   } catch (e) {
     console.error(e);
-    throw e;
+    return NextResponse.json({ message: "error" }, { status: 500 });
   }
-};
-
-const fetchListAndSaveSqlite = async (
-  cdmCardNo: string,
-  pageNo: number
-): Promise<{ list: IDamAiRecord[]; meta: IMeta }> => {
-  console.log({ cdmCardNo, pageNo });
-  const response = await axios.get(url, {
-    params: {
-      cdmCardNo,
-      pageNo: pageNo,
-      detailFlg: 1,
-    },
-  });
-
-  const data = response.data;
-
-  const resultJson = await convertXmlToJson(data);
-
-  const list = convertDamAiScores(resultJson);
-
-  const meta = convertMeta(resultJson);
-
-  return { list, meta };
 };
