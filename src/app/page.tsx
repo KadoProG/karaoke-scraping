@@ -4,6 +4,7 @@ import { BarChart } from "@/components/dataDisplay/BarChart";
 import { DamAiTable } from "@/components/domains/damAi/DamAiTable";
 import { TextField } from "@/components/input/TextField";
 import Pagination from "@/components/navigation/Pagination";
+import { useKaraokeCopyScoringAiIds } from "@/hooks/useKaraokeCopyScoringAiIds";
 import { useKaraokeHome } from "@/hooks/useKaraokeHome";
 import React from "react";
 
@@ -17,6 +18,8 @@ const Page = () => {
     handleCopyClick,
     handleCopyClickWithoutId,
   } = useKaraokeHome();
+
+  const { handleCopyScoringAiIds } = useKaraokeCopyScoringAiIds();
 
   return (
     <div style={{ padding: 10 }}>
@@ -49,6 +52,10 @@ const Page = () => {
       </button>
       <button disabled={!damAiTableData} onClick={handleCopyClickWithoutId}>
         IDなしでデータをコピー
+      </button>
+
+      <button onClick={handleCopyScoringAiIds}>
+        ScoringAiIdの配列をコピー
       </button>
 
       <DamAiTable data={damAiTableData || []} />
