@@ -4,7 +4,7 @@ import { useSnackbar } from "@/components/context/SnackbarContextProvider";
 import React from "react";
 
 interface CopyToClipboardContextType {
-  copyToClipboard: (text: string) => void;
+  copyToClipboard: (text: string, isDisabledSnackBar?: boolean) => void;
 }
 const context = React.createContext<CopyToClipboardContextType>({
   copyToClipboard: () => {},
@@ -18,7 +18,7 @@ export const CopyToClipboardContextProvider = (props: {
   const { setSnackbar } = useSnackbar();
   const copyContext = React.useMemo(
     () => ({
-      copyToClipboard: async (text: string) => {
+      copyToClipboard: async (text: string, isDisabledSnackBar?: boolean) => {
         try {
           if (navigator.clipboard) {
             await navigator.clipboard.writeText(text);
@@ -33,7 +33,8 @@ export const CopyToClipboardContextProvider = (props: {
             textarea.blur();
           }
 
-          setSnackbar("Success to copy to clipboard", "success");
+          !isDisabledSnackBar &&
+            setSnackbar("Success to copy to clipboard", "success");
         } catch (e) {
           setSnackbar("Failed to copy to clipboard", "error");
           console.error(e); // eslint-disable-line no-console

@@ -12,7 +12,7 @@ export const useKaraokeCopyScoringAiIds = () => {
       const response = await axios.get("/api/karaoke/ai-ids");
       const { scoringAiIds, meta } = response.data;
 
-      copyToClipboard(JSON.stringify(scoringAiIds, null, 2));
+      copyToClipboard(JSON.stringify(scoringAiIds), true);
       meta.total &&
         setSnackbar(
           `ScoringAiIdの配列をコピーしました。合計${meta.total}件`,
