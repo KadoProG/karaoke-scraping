@@ -1,4 +1,4 @@
-import { convertDamAiScores, convertMeta } from "@/utils/convertData";
+import { convertDamScores, convertMeta } from "@/utils/convertDamScores";
 import { convertXmlToJson } from "@/utils/convertXmlToJson";
 import axios from "axios";
 
@@ -23,7 +23,7 @@ export const fetchDamAiSite = async (options: {
 
     const data = response.data;
     const resultJson = await convertXmlToJson(data);
-    const list = convertDamAiScores(resultJson);
+    const list = convertDamScores(resultJson);
 
     const meta = convertMeta(resultJson);
     return { list, meta };
