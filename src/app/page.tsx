@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { BarChart } from "@/components/dataDisplay/BarChart";
-import { DamAiTable } from "@/components/domains/damAi/DamAiTable";
-import { TextField } from "@/components/input/TextField";
-import Pagination from "@/components/navigation/Pagination";
-import { useKaraokeCopyScoringAiIds } from "@/hooks/useKaraokeCopyScoringAiIds";
-import { useKaraokeHome } from "@/hooks/useKaraokeHome";
-import React from "react";
+import React from 'react';
+import { BarChart } from '@/components/dataDisplay/BarChart';
+import { DamAiTable } from '@/components/domains/damAi/DamAiTable';
+import { TextField } from '@/components/input/TextField';
+import Pagination from '@/components/navigation/Pagination';
+import { useKaraokeCopyScoringAiIds } from '@/hooks/useKaraokeCopyScoringAiIds';
+import { useKaraokeHome } from '@/hooks/useKaraokeHome';
 
 const Page = () => {
   const {
@@ -24,13 +24,13 @@ const Page = () => {
   return (
     <div style={{ padding: 10 }}>
       <h1>カラオケ取得APIを試す</h1>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: 'flex' }}>
         <p>合計：{damAiTableMeta.total}</p>
         <TextField
           label="表示数"
           name="perPage"
           type="number"
-          value={String(meta.perPage) ?? ""}
+          value={String(meta.perPage) ?? ''}
           onChange={(value) => setMeta({ ...meta, perPage: Number(value) })}
         />
       </div>
@@ -43,7 +43,7 @@ const Page = () => {
         label="検索"
         name="search"
         type="text"
-        value={meta.search ?? ""}
+        value={meta.search ?? ''}
         onChange={(value) => setMeta({ ...meta, search: value })}
       />
       <div>{isLoading && <span>取得中...</span>}</div>
@@ -54,9 +54,7 @@ const Page = () => {
         IDなしでデータをコピー
       </button>
 
-      <button onClick={handleCopyScoringAiIds}>
-        ScoringAiIdの配列をコピー
-      </button>
+      <button onClick={handleCopyScoringAiIds}>ScoringAiIdの配列をコピー</button>
 
       <DamAiTable data={damAiTableData || []} />
       <Pagination

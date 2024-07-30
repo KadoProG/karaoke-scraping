@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
-import styles from "@/components/context/SnackbarContext.module.scss";
+import React from 'react';
+import styles from '@/components/context/SnackbarContext.module.scss';
 
-type AlertColor = "success" | "info" | "warning" | "error";
+type AlertColor = 'success' | 'info' | 'warning' | 'error';
 interface SnackbarContextType {
   messageObjects: { message: string; color: AlertColor }[];
   setSnackbar: (message: string, color: AlertColor) => void;
@@ -16,9 +16,7 @@ const context = React.createContext<SnackbarContextType>({
 
 export const useSnackbar = () => React.useContext(context);
 
-export const SnackbarContextProvider = (props: {
-  children: React.ReactNode;
-}) => {
+export const SnackbarContextProvider = (props: { children: React.ReactNode }) => {
   const [messageObjects, setMessageObjects] = React.useState<
     { message: string; color: AlertColor }[]
   >([]);
@@ -38,9 +36,7 @@ export const SnackbarContextProvider = (props: {
       <div className={styles.snackbar__message}>
         {messageObjects.map((messageObject, index) => (
           <p
-            className={`${styles.snackbar__message_p} ${
-              styles[`${messageObject.color}`]
-            }`}
+            className={`${styles.snackbar__message_p} ${styles[`${messageObject.color}`]}`}
             // eslint-disable-next-line react/no-array-index-key
             key={messageObject.message + index}
           >

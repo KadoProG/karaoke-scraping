@@ -1,16 +1,16 @@
-import { PrismaClient } from "@prisma/client";
-import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from '@prisma/client';
+import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export const GET = async (req: NextRequest) => {
+export const GET = async () => {
   try {
     const data = await prisma.damAiScores.findMany({
       select: {
         scoringAiId: true,
       },
       orderBy: {
-        scoringDateTime: "desc",
+        scoringDateTime: 'desc',
       },
     });
 
@@ -23,7 +23,8 @@ export const GET = async (req: NextRequest) => {
       },
     });
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error(e);
-    return NextResponse.json({ message: "error" }, { status: 500 });
+    return NextResponse.json({ message: 'error' }, { status: 500 });
   }
 };

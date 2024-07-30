@@ -1,7 +1,7 @@
-import styles from "@/components/domains/damAi/DamAiTable.module.scss";
-import { convertDate } from "@/utils/convertDate";
-import { formatDate } from "@/utils/formatDate";
-import React from "react";
+import React from 'react';
+import styles from '@/components/domains/damAi/DamAiTable.module.scss';
+import { convertDate } from '@/utils/convertDate';
+import { formatDate } from '@/utils/formatDate';
 
 interface DamAiTableProps {
   data: IDamAiRecord[]; // dataを受け取る

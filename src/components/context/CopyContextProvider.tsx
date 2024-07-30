@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useSnackbar } from "@/components/context/SnackbarContextProvider";
-import React from "react";
+import React from 'react';
+import { useSnackbar } from '@/components/context/SnackbarContextProvider';
 
 interface CopyToClipboardContextType {
   copyToClipboard: (text: string, isDisabledSnackBar?: boolean) => void;
@@ -12,9 +12,7 @@ const context = React.createContext<CopyToClipboardContextType>({
 
 export const useCopyToClipboard = () => React.useContext(context);
 
-export const CopyToClipboardContextProvider = (props: {
-  children: React.ReactNode;
-}) => {
+export const CopyToClipboardContextProvider = (props: { children: React.ReactNode }) => {
   const { setSnackbar } = useSnackbar();
   const copyContext = React.useMemo(
     () => ({
@@ -24,19 +22,18 @@ export const CopyToClipboardContextProvider = (props: {
             await navigator.clipboard.writeText(text);
           } else {
             const textarea = document.getElementById(
-              "hidden-textarea-to-clip"
+              'hidden-textarea-to-clip'
             ) as HTMLTextAreaElement;
             if (textarea === null) return;
             textarea.value = text;
             textarea.select();
-            document.execCommand("copy");
+            document.execCommand('copy');
             textarea.blur();
           }
 
-          !isDisabledSnackBar &&
-            setSnackbar("Success to copy to clipboard", "success");
+          !isDisabledSnackBar && setSnackbar('Success to copy to clipboard', 'success');
         } catch (e) {
-          setSnackbar("Failed to copy to clipboard", "error");
+          setSnackbar('Failed to copy to clipboard', 'error');
           console.error(e); // eslint-disable-line no-console
         }
       },
@@ -48,7 +45,7 @@ export const CopyToClipboardContextProvider = (props: {
     <context.Provider value={copyContext}>
       <textarea
         id="hidden-textarea-to-clip"
-        style={{ zIndex: -1, opacity: 0, position: "fixed", top: 0, left: 0 }}
+        style={{ zIndex: -1, opacity: 0, position: 'fixed', top: 0, left: 0 }}
       />
       {props.children}
     </context.Provider>

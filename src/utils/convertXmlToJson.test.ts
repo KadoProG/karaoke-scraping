@@ -1,8 +1,8 @@
-import { convertXmlToJson } from "@/utils/convertXmlToJson";
-import testJson from "@/mock/test.json";
+import testJson from '@/mock/test.json';
+import { convertXmlToJson } from '@/utils/convertXmlToJson';
 
-describe("convertXmlToJson", () => {
-  it("should return converted data", async () => {
+describe('convertXmlToJson', () => {
+  it('should return converted data', async () => {
     // Write your test here
     const sampleData = `<?xml version="1.0" encoding="UTF-8"?>
 <document xmlns="https://www.clubdam.com/app/damtomo/scoring/GetScoringAiListXML" type="2.2">

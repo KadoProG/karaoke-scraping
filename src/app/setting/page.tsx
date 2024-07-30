@@ -1,17 +1,16 @@
-"use client";
+'use client';
 
-import { TextField } from "@/components/input/TextField";
-import axios from "axios";
-import React from "react";
+import axios from 'axios';
+import React from 'react';
+import { TextField } from '@/components/input/TextField';
 
 const Page = () => {
-  const [minPage, setMinPage] = React.useState<string>(""); // 最小ページ番号
-  const [maxPage, setMaxPage] = React.useState<string>(""); // 最大ページ番号
-  const [isIgnoreCurrentMaxId, setIsIgnoreCurrentMaxId] =
-    React.useState<boolean>(false);
+  const [minPage, setMinPage] = React.useState<string>(''); // 最小ページ番号
+  const [maxPage, setMaxPage] = React.useState<string>(''); // 最大ページ番号
+  const [isIgnoreCurrentMaxId, setIsIgnoreCurrentMaxId] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [cdmCardNo, setCdmCardNo] = React.useState<string>(
-    process.env.NEXT_PUBLIC_CDM_CARD_NO ?? ""
+    process.env.NEXT_PUBLIC_CDM_CARD_NO ?? ''
   );
 
   const handleFetchListClick = React.useCallback(async () => {
@@ -19,21 +18,22 @@ const Page = () => {
     try {
       setIsLoading(true);
 
+      // eslint-disable-next-line no-console
       console.log({
         minPage: Number(minPage) || undefined,
         maxPage: Number(maxPage) || undefined,
         cdmCardNo,
       });
-      const response = await axios.post(url, {
+      await axios.post(url, {
         minPage: Number(minPage) || undefined,
         maxPage: Number(maxPage) || undefined,
         cdmCardNo,
         isIgnoreCurrentMaxId,
       });
-      const data = response.data;
 
       setIsLoading(false);
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e); // エラーが発生した場合はエラーをコンソールに出力
     }
   }, [minPage, maxPage, cdmCardNo, isIgnoreCurrentMaxId]);
@@ -52,7 +52,7 @@ const Page = () => {
         <button onClick={handleFetchListClick}>APIを取得</button>
         {isLoading && <span>取得中...</span>}
       </div>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: 'flex' }}>
         <TextField
           label="最小Page"
           name="minPage"

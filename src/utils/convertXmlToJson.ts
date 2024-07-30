@@ -1,4 +1,4 @@
-import { parseString } from "xml2js";
+import { parseString } from 'xml2js';
 
 /**
  * Convert XML to JSON
@@ -7,8 +7,8 @@ import { parseString } from "xml2js";
  * @param data XML data (string)
  * @returns JSON data (object)
  */
-export const convertXmlToJson = async (data: string) => {
-  return await new Promise((resolve, reject) => {
+export const convertXmlToJson = async (data: string) =>
+  await new Promise((resolve, reject) => {
     parseString(data, (err, result) => {
       if (err) {
         reject(err);
@@ -16,4 +16,3 @@ export const convertXmlToJson = async (data: string) => {
       resolve(result);
     });
   });
-};

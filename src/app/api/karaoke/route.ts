@@ -1,5 +1,5 @@
-import { PrismaClient } from "@prisma/client";
-import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from '@prisma/client';
+import { NextRequest, NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
@@ -7,22 +7,14 @@ export const GET = async (req: NextRequest) => {
   try {
     // クエリパラメータを取得
     const { searchParams } = new URL(req.url);
-    const pageString = searchParams.get("page");
-    const perPageString = searchParams.get("perPage");
-    const scoringAiId = searchParams.get("scoringAiId");
-    const search = searchParams.get("search");
+    const pageString = searchParams.get('page');
+    const perPageString = searchParams.get('perPage');
+    const scoringAiId = searchParams.get('scoringAiId');
+    const search = searchParams.get('search');
 
     const page = Number(pageString) || 1;
     const perPage = Number(perPageString) || undefined;
     const skip = (page - 1) * (perPage ?? 0);
-
-    console.log({
-      page,
-      perPage,
-      skip,
-      scoringAiId,
-      search,
-    });
 
     const whereOrQuery = [];
 
@@ -56,7 +48,7 @@ export const GET = async (req: NextRequest) => {
         OR: whereOrQuery.length > 0 ? whereOrQuery : undefined,
       },
       orderBy: {
-        scoringDateTime: "desc",
+        scoringDateTime: 'desc',
       },
     });
 
@@ -73,7 +65,8 @@ export const GET = async (req: NextRequest) => {
       meta,
     });
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error(e);
-    return NextResponse.json({ message: "error" }, { status: 500 });
+    return NextResponse.json({ message: 'error' }, { status: 500 });
   }
 };

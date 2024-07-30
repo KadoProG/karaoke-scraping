@@ -1,13 +1,13 @@
-import { convertDate } from "@/utils/convertDate";
+import { convertDate } from '@/utils/convertDate';
 
-describe("convertDate", () => {
-  it("should return Date object", () => {
-    const dateString = "20210101235959";
+describe('convertDate', () => {
+  it('should return Date object', () => {
+    const dateString = '20210101235959';
     const result = convertDate(dateString);
     expect(result).toBeInstanceOf(Date);
   });
-  it("should return correct Date object", () => {
-    const dateString = "20210101235959";
+  it('should return correct Date object', () => {
+    const dateString = '20210101235959';
     const result = convertDate(dateString);
     expect(result.getFullYear()).toBe(2021);
     expect(result.getMonth()).toBe(0);

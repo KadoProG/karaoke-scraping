@@ -2,7 +2,7 @@
  * 共通データを変換する関数
  */
 
-import { convertDamDate } from "./convertDamDate";
+import { convertDamDate } from '@/utils/convertDamDate';
 
 export const convertDataDamCommonFields = (scoreDetail: any) => ({
   contentsName: scoreDetail.contentsName,
@@ -27,8 +27,7 @@ export const convertDataDamCommonFields = (scoreDetail: any) => ({
   nationalAverageRhythm: scoreDetail.nationalAverageRhythm,
   nationalAverageStability: scoreDetail.nationalAverageStability,
   nationalAverageTotalPoints: scoreDetail.nationalAverageTotalPoints,
-  nationalAverageVibratoAndLongtone:
-    scoreDetail.nationalAverageVibratoAndLongtone,
+  nationalAverageVibratoAndLongtone: scoreDetail.nationalAverageVibratoAndLongtone,
   radarChartExpressive: scoreDetail.radarChartExpressive,
   radarChartPitch: scoreDetail.radarChartPitch,
   radarChartRhythm: scoreDetail.radarChartRhythm,

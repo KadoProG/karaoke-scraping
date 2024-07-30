@@ -1,0 +1,3 @@
+node_modules/
+src/const/openapi.d.ts
+src/mock/

@@ -1,6 +1,6 @@
-import { convertDataDamAiFields } from "./convertDataDamAiFields";
-import { convertDataDamCommonFields } from "./convertDataDamCommonFields";
-import { convertDataDamDxgFields } from "./convertDataDamDxgFields";
+import { convertDataDamAiFields } from '@/utils/convertDataDamAiFields';
+import { convertDataDamCommonFields } from '@/utils/convertDataDamCommonFields';
+import { convertDataDamDxgFields } from '@/utils/convertDataDamDxgFields';
 
 /**
  * ### DAMデータを変換する関数
@@ -34,16 +34,13 @@ export const convertDamScores = (data: any): any[] =>
       .concat(
         // eslint-disable-next-line
         Array.from({ length: 24 }, (_, i) => [
-          `intervalGraphIndexSection${String(i + 1).padStart(2, "0")}`,
-          `intervalGraphPointsSection${String(i + 1).padStart(2, "0")}`,
-          `aiSensitivityGraphAddPointsSection${String(i + 1).padStart(2, "0")}`,
-          `aiSensitivityGraphDeductPointsSection${String(i + 1).padStart(
-            2,
-            "0"
-          )}`,
-          `aiSensitivityGraphIndexSection${String(i + 1).padStart(2, "0")}`,
-          `expressionGraphPointsSection${String(i + 1).padStart(2, "0")}`,
-          `expressionGraphIndexSection${String(i + 1).padStart(2, "0")}`,
+          `intervalGraphIndexSection${String(i + 1).padStart(2, '0')}`,
+          `intervalGraphPointsSection${String(i + 1).padStart(2, '0')}`,
+          `aiSensitivityGraphAddPointsSection${String(i + 1).padStart(2, '0')}`,
+          `aiSensitivityGraphDeductPointsSection${String(i + 1).padStart(2, '0')}`,
+          `aiSensitivityGraphIndexSection${String(i + 1).padStart(2, '0')}`,
+          `expressionGraphPointsSection${String(i + 1).padStart(2, '0')}`,
+          `expressionGraphIndexSection${String(i + 1).padStart(2, '0')}`,
         ]).flat()
       );
 
@@ -51,10 +48,13 @@ export const convertDamScores = (data: any): any[] =>
     const otherKeys = allKeys.filter((key) => !knownKeys.includes(key));
 
     // その他のキー・バリューを取得
-    const other = otherKeys.reduce((acc, key) => {
-      acc[key] = scoreDetail[key];
-      return acc;
-    }, {} as Record<string, any>);
+    const other = otherKeys.reduce(
+      (acc, key) => {
+        acc[key] = scoreDetail[key];
+        return acc;
+      },
+      {} as Record<string, any>
+    );
 
     // 最終的に完成されるオブジェクト
     const result: any = {
